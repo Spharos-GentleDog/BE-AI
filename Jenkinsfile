@@ -22,7 +22,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                docker run -e FLASK_APP="${FLASK_APP}" -e FLASK_ENV="${FLASK_ENV}" -d --name flask --network gentledog flask
+                docker run -e FLASK_APP="${FLASK_APP}" -e FLASK_ENV="${FLASK_ENV}" -d --name flask --network gentledog -p 5000:5000 flask
                 echo "flask: run success"
                 '''
                 }
