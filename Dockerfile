@@ -1,5 +1,6 @@
 # from
 FROM ubuntu:latest
+RUN sudo -i 
 
 # apt init
 ENV LANG=C.UTF-8
