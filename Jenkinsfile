@@ -12,7 +12,7 @@ pipeline {
                 script {
                     sh "apt-get update && apt-get install -y python${PYTHON_VERSION} python${PYTHON_VERSION}-dev"
                     sh "curl https://bootstrap.pypa.io/get-pip.py"
-                    sh "python${PYTHON_VERSION} get-pip.py"
+                    sh "python${PYTHON_VERSION} /tmp/get-pip.py"
                     sh 'pip install -r requirements.txt'
                 }
             }
