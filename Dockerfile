@@ -1,12 +1,12 @@
 # from
 FROM ubuntu:latest
-RUN sudo -i 
 
 # apt init
 ENV LANG=C.UTF-8
 ENV TZ=Asia/Seoul
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && \
+RUN sudo -i && \
+    apt-get update && \
     apt-get install -y --no-install-recommends tzdata g++ git curl
 
 
