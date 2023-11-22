@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         FLASK_APP = 'AiService.py'
+        FLASK_ENV = 'production'
         PYTHON_VERSION = '3.6'
     }
 
@@ -21,7 +22,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                docker run -d --name flask --network gentledog flask
+                docker run -e FLASK_APP="${FLASK_APP}" -e FLASK_ENV="${FLASK_ENV}" -d --name flask --network gentledog flask
                 echo "flask: run success"
                 '''
                 }
