@@ -11,6 +11,7 @@ pipeline {
             steps {
                 script {
                     sh "apt-get update && apt-get install -y python${PYTHON_VERSION} python${PYTHON_VERSION}-dev"
+                    sh "wget https://bootstrap.pypa.io/get-pip.py && python${PYTHON_VERSION} get-pip.py"
                     sh 'pip install -r requirements.txt'
                 }
             }
