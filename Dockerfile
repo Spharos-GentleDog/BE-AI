@@ -5,8 +5,7 @@ FROM ubuntu:latest
 ENV LANG=C.UTF-8
 ENV TZ=Asia/Seoul
 ENV DEBIAN_FRONTEND=noninteractive
-RUN sudo -i && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -y --no-install-recommends tzdata g++ git curl
 
 
@@ -35,6 +34,7 @@ FROM python:3.6
 
 # venv 생성 
 RUN python -m venv gentledog
+RUN chmod +x gentledog/bin/activate
 RUN gentledog/bin/activate
 
 COPY . /app
