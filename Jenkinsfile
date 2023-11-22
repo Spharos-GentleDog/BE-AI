@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         FLASK_APP = 'AiService.py'
-        PYTHON_VERSION = '3'
+        PYTHON_VERSION = '3.6'
     }
 
     stages {
