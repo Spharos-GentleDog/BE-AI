@@ -1,28 +1,40 @@
 # Flask : Flask server 
 # jsonify : JSON응답데이터를 만들어 주는 메서드 
-from flask import Flask,jsonify
+from flask import Flask,jsonify,request
 from os.path import join
 import json
 import numpy as np
 from tensorflow.python.keras.applications.resnet50 import preprocess_input
 from tensorflow.python.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.python.keras.applications import ResNet50
-from IPython.display import Image, display
+from PIL import Image
+import json
+from io import BytesIO
+import base64
 
 # Flask 객체를 app에 할당 
 app = Flask(__name__)
 
 ##### API routing #####
 
-@app.route("/image_predict",method=['GET'])
+@app.route("/image_predict",methods=['POST'])
 def prdict_image():
+    
+    # 이미지 받기 
+    img_file = request.files['img']
+
+    # # 이미지를 base64로 디코딩
+    # img_data = base64.b64decode(img.read())
+    
+    # # BytesIO 객체로 이미지 읽기
+    # img = Image.open(BytesIO(img_data))
     
     # 변경할 사이즈 
     image_size = 224
     # 모델 저장위치 
     model_weight_path = '../AI-models/AI_test/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
     # 예측할 사진 위치 
-    img_path = '../AI-models/AI_test/test_data/test6.png'
+    # img_path = img_file
     # class 저장 파일 위치 
     class_list_path = '../AI-models/AI_test/imagenet_class_index.json'
     
@@ -58,23 +70,24 @@ def prdict_image():
 
 
     # 이미지 사이즈 변경 함수 
-    def read_and_prep_image(img_path, img_height=image_size, img_width=image_size):
-        img = load_img(img_path, target_size=(img_height, img_width))
-        img = np.array(img_to_array(img))
-        output = preprocess_input(img)
+    def read_and_prep_image(img_file, img_height=image_size, img_width=image_size):
+        img = Image.open(img_file)
+        img = img.resize((img_height, img_width))
+        img_array = np.array(img)
+        output = preprocess_input(img_array)
         test_data = output.reshape((1,) + output.shape)
         return(test_data)
 
 
     # predict 및 결과 출력 함수 
-    def model_predict (model_weight_path, img_path, class_list_path):
+    def model_predict (model_weight_path, img_file, class_list_path):
         my_model = ResNet50(weights=model_weight_path)
-        test_data = read_and_prep_image(img_path)
+        test_data = read_and_prep_image(img_file)
         preds = my_model.predict(test_data)
         most_likely_labels = decode_predictions(preds, top=3, class_list_path=class_list_path)
         return most_likely_labels[0][0][1]
     
-    result = model_predict(model_weight_path, img_path, class_list_path)
+    result = model_predict(model_weight_path, img_file, class_list_path)
     # print(result)
     data = {'result':result}
     
