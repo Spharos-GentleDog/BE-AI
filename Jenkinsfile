@@ -16,7 +16,7 @@ pipeline {
                     sh "ls -l /tmp/get-pip.py"
                     sh "python${PYTHON_VERSION} -m venv venv"
                     sh "source venv/bin/activate"
-                    sh "python${PYTHON_VERSION} /tmp/get=pip.py"
+                    sh "python${PYTHON_VERSION} /tmp/get-pip.py"
                     sh 'pip install -r requirements.txt'
 
                 }
