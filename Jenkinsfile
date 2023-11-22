@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        FLASK_APP = 'AiService.py'
+        FLASK_APP = './flask/AiService.py'
         FLASK_ENV = 'production'
         PYTHON_VERSION = '3.6'
     }
