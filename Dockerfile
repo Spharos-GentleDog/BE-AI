@@ -30,6 +30,9 @@ RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN mkdir -p /workspace
 WORKDIR /workspace
 
+# venv 생성 
+RUN python -m venv gentledog
+RUN gentledog/bin/activate
 
 FROM python:3.6
 
