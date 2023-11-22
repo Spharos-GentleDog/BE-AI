@@ -9,8 +9,6 @@ from tensorflow.python.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.python.keras.applications import ResNet50
 from PIL import Image
 import json
-from io import BytesIO
-import base64
 
 # Flask 객체를 app에 할당 
 app = Flask(__name__)
