@@ -7,13 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
-            steps {
-                script {
-                    sh 'pip install -r requirements.txt'
-                }
-            }
-        }
         stage('DockerSize') {
             steps {
                 sh '''
