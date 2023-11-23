@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM --platform=$BUILDPLATFORM python:3.6-alpine AS builder
+FROM --platform=$BUILDPLATFORM python:3.6 AS builder
 
 WORKDIR /code
 COPY requirements.txt /code
