@@ -69,7 +69,7 @@ def prdict_image():
 
     # 이미지 사이즈 변경 함수 
     def read_and_prep_image(img_file, img_height=image_size, img_width=image_size):
-        img = Image.open(img_file)
+        img = Image.open(img_file.stream)
         img = img.resize((img_height, img_width))
         img_array = np.array(img)
         output = preprocess_input(img_array)
