@@ -2,6 +2,7 @@
 # jsonify : JSON응답데이터를 만들어 주는 메서드 
 from flask import Flask,jsonify,request
 from os.path import join
+import os 
 import json
 import numpy as np
 from tensorflow.python.keras.applications.resnet50 import preprocess_input
