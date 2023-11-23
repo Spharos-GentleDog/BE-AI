@@ -90,7 +90,7 @@ def prdict_image():
     
     result1, result2 = model_predict(model_weight_path, img_file, class_list_path)
     # print(result)
-    data = {'result1':result, 'result2' : result2}
+    data = {'result1':result1, 'result2' : result2}
     
     return jsonify(data)
 
