@@ -1,35 +1,50 @@
-# syntax=docker/dockerfile:1.4
-FROM --platform=$BUILDPLATFORM python:3.6 AS builder
+# from
+FROM ubuntu:latest
 
-WORKDIR /code
-COPY requirements.txt /code
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip3 install -r requirements.txt
+# apt init
+ENV LANG=C.UTF-8
+ENV TZ=Asia/Seoul
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends tzdata g++ git curl
 
+
+# python stuff
+RUN apt-get install -y python3-pip python3-dev
+RUN cd /usr/local/bin && \
+    ln -s /usr/bin/python3 python && \
+    ln -s /usr/bin/pip3 pip && \
+    /usr/local/bin/python -m pip install --upgrade pip
+
+# apt cleanse
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# copy resources
 COPY . .
 
-ENV FLASK_APP AiService.py
-ENV FLASK_ENV development
-ENV FLASK_RUN_PORT 5000
-ENV FLASK_RUN_HOST 0.0.0.0
+# timezone
+RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-EXPOSE 5000
+# workspace
+RUN mkdir -p /workspace
+WORKDIR /workspace
 
-CMD ["flask", "run"]
+FROM python:3.6
 
-FROM builder AS dev-envs
+# venv 생성 
+RUN python -m venv gentledog
+RUN chmod +x gentledog/bin/activate
+RUN gentledog/bin/activate
 
-RUN <<EOF
-apk update
-apk add git
-EOF
+COPY . /app
 
-RUN <<EOF
-addgroup -S docker
-adduser -S --shell /bin/bash --ingroup docker vscode
-EOF
+RUN pip3 install flask
 
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
+WORKDIR /app
 
-CMD ["flask", "run"]
+# pip install 실행
+RUN pip install -r requirements.txt
+
+
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0", "--port", "5000"]
