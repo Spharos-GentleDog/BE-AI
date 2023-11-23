@@ -30,11 +30,13 @@ def prdict_image():
     # 변경할 사이즈 
     image_size = 224
     # 모델 저장위치 
-    model_weight_path = '../AI-models/AI_test/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
+    # model_weight_path = '../AI-models/AI_test/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
     # 예측할 사진 위치 
     # img_path = img_file
     # class 저장 파일 위치 
-    class_list_path = '../AI-models/AI_test/imagenet_class_index.json'
+    # class_list_path = '../AI-models/AI_test/imagenet_class_index.json'
+    model_weight_path = os.getenv('MODEL_WEIGHT_PATH', './AI-models/AI_test/resnet50_weights_tf_dim_ordering_tf_kernels.h5')
+    class_list_path = os.getenv('CLASS_LIST_PATH', './AI-models/AI_test/imagenet_class_index.json')
     
     # kaggle learntools 라이브러리 내의 decode_predictions 함수 
     # https://github.com/Kaggle/learntools
