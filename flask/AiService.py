@@ -86,11 +86,11 @@ def prdict_image():
         test_data = read_and_prep_image(img_file)
         preds = my_model.predict(test_data)
         most_likely_labels = decode_predictions(preds, top=3, class_list_path=class_list_path)
-        return most_likely_labels[0][0][1]
+        return most_likely_labels[0][0][1] , most_likely_labels[0][0][2] 
     
-    result = model_predict(model_weight_path, img_file, class_list_path)
+    result1, result2 = model_predict(model_weight_path, img_file, class_list_path)
     # print(result)
-    data = {'result':result}
+    data = {'result1':result, 'result2' : result2}
     
     return jsonify(data)
 
