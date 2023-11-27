@@ -2,6 +2,7 @@
 # jsonify : JSON응답데이터를 만들어 주는 메서드 
 from flask import Flask,jsonify,request
 from os.path import join
+import os 
 import json
 import numpy as np
 from tensorflow.python.keras.applications.resnet50 import preprocess_input
@@ -33,11 +34,13 @@ def prdict_image():
     # 변경할 사이즈 
     image_size = 224
     # 모델 저장위치 
-    model_weight_path = '../AI-models/AI_test/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
+    # model_weight_path = '../AI-models/AI_test/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
     # 예측할 사진 위치 
     # img_path = img_file
     # class 저장 파일 위치 
-    class_list_path = '../AI-models/AI_test/imagenet_class_index.json'
+    # class_list_path = '../AI-models/AI_test/imagenet_class_index.json'
+    model_weight_path = os.getenv('MODEL_WEIGHT_PATH', './AI-models/AI_test/resnet50_weights_tf_dim_ordering_tf_kernels.h5')
+    class_list_path = os.getenv('CLASS_LIST_PATH', './AI-models/AI_test/imagenet_class_index.json')
     
     # kaggle learntools 라이브러리 내의 decode_predictions 함수 
     # https://github.com/Kaggle/learntools
@@ -72,7 +75,7 @@ def prdict_image():
 
     # 이미지 사이즈 변경 함수 
     def read_and_prep_image(img_file, img_height=image_size, img_width=image_size):
-        img = Image.open(img_file)
+        img = Image.open(img_file.stream)
         img = img.resize((img_height, img_width))
         img_array = np.array(img)
         output = preprocess_input(img_array)
@@ -91,7 +94,6 @@ def prdict_image():
     result1, result2 = model_predict(model_weight_path, img_file, class_list_path)
     # print(result)
     data = {'result1':result1,'result2':result2}
-    
     return jsonify(data)
 
 ###### API routing end #######
