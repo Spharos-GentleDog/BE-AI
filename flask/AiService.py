@@ -9,9 +9,12 @@ from tensorflow.python.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.python.keras.applications import ResNet50
 from PIL import Image
 import json
+from flask_cors import CORS
+
 
 # Flask 객체를 app에 할당 
 app = Flask(__name__)
+CORS(app)
 
 ##### API routing #####
 
@@ -83,11 +86,11 @@ def prdict_image():
         test_data = read_and_prep_image(img_file)
         preds = my_model.predict(test_data)
         most_likely_labels = decode_predictions(preds, top=3, class_list_path=class_list_path)
-        return most_likely_labels[0][0][1]
+        return most_likely_labels[0][0][1],most_likely_labels[0][1][1]
     
-    result = model_predict(model_weight_path, img_file, class_list_path)
+    result1, result2 = model_predict(model_weight_path, img_file, class_list_path)
     # print(result)
-    data = {'result':result}
+    data = {'result1':result1,'result2':result2}
     
     return jsonify(data)
 
