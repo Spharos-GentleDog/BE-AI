@@ -77,10 +77,10 @@ def prdict_image():
     def read_and_prep_image(img_file, img_height=image_size, img_width=image_size):
         img = Image.open(img_file.stream)
         img = img.resize((img_height, img_width))
-        img_array = np.array(img)
-        output = preprocess_input(img_array)
-        test_data = output.reshape((1,) + output.shape)
-        return(test_data)
+        img_array = img_to_array(img)
+        img_array = np.expand_dims(img_array, axis=0)  # 모델에 맞게 차원 확장
+        img_array = preprocess_input(img_array)
+        return img_array
 
 
     # predict 및 결과 출력 함수 
